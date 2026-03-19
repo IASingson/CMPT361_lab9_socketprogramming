@@ -64,6 +64,10 @@ def client():
                 msg_to_server = input(msg_from_server)
                 client_socket.send(msg_to_server.encode(FORMAT))
 
+                # client receives phonebook entries with search word
+                msg_from_server = client_socket.recv(SIZE).decode(FORMAT)
+                print(msg_from_server)
+
                 # get server menu options again
                 msg_from_server = client_socket.recv(SIZE).decode(FORMAT)
 

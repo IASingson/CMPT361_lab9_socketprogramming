@@ -29,6 +29,9 @@ def server():
     # only one client allowed at each time 
     server_socket.listen(1)
 
+    # the database
+    phonebook = {}
+
     while 1:
         try:
             # server accepts client connection 
@@ -42,8 +45,6 @@ def server():
 
             # server receives client menu option 
             msg_from_client = connection_socket.recv(SIZE).decode(FORMAT)
-
-            phonebook = {}
 
             while msg_from_client != '3':
 
@@ -90,11 +91,17 @@ def server():
                     msg_from_client = connection_socket.recv(SIZE).decode(FORMAT)
                     search_word = msg_from_client
 
-                    # send phonebook entries with search word to clint
+                    # send phonebook entries with search word to client
+                    tab = '\t\t\t\t'
+                    newline = '\n'
+                    msg_to_client = f'Name{tab}Phone Number(s){newline}'
+
                     for key in phonebook:
                         if search_word in key:
-                            print(key, phonebook[key])
-
+                            #print(key, phonebook[key])
+                            msg_to_client += f'{key}{tab}{phonebook[key]}{newline}'
+                    
+                    connection_socket.send(msg_to_client.encode(FORMAT))
 
                     # send client server menu options
                     connection_socket.send(server_menu)
@@ -102,10 +109,6 @@ def server():
                     # receive client menu option
                     msg_from_client = connection_socket.recv(SIZE).decode(FORMAT)
 
-                # Phone search subprotocol
-            
-            
-    
             connection_socket.close()
 
         except socket.error as e:
