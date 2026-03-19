@@ -47,7 +47,7 @@ def server():
 
             while msg_from_client != '3':
 
-                server_menu = '\nPlease select the operation \n1)Add a new entry\n2_Search\n3|Terminate the connection\n\nChoice: '.encode(FORMAT)
+                server_menu = '\nPlease select the operation \n1)Add a new entry\n2)Search\n3)Terminate the connection\n\nChoice: '.encode(FORMAT)
 
                 # perform phone adding subprotocol
                 if msg_from_client == '1':
@@ -79,12 +79,25 @@ def server():
                     # receive client menu option
                     msg_from_client = connection_socket.recv(SIZE).decode(FORMAT)
 
-         
-
+                # perform phone search protocol
                 if msg_from_client == '2':
 
-                    # send client server menu options
+                    # ask client for the search word
+                    msg_to_client = 'Enter the search word: '.encode(FORMAT)
                     connection_socket.send(msg_to_client)
+
+                    # receive search word from client
+                    msg_from_client = connection_socket.recv(SIZE).decode(FORMAT)
+                    search_word = msg_from_client
+
+                    # send phonebook entries with search word to clint
+                    for key in phonebook:
+                        if search_word in key:
+                            print(key, phonebook[key])
+
+
+                    # send client server menu options
+                    connection_socket.send(server_menu)
 
                     # receive client menu option
                     msg_from_client = connection_socket.recv(SIZE).decode(FORMAT)

@@ -34,11 +34,11 @@ def client():
         # keep running program as long as client does not choose 3
     
         while msg_to_server != '3':
-
-            msg_from_server = client_socket.recv(SIZE).decode(FORMAT)
             
             if msg_to_server == '1':
-                
+
+                msg_from_server = client_socket.recv(SIZE).decode(FORMAT)
+
                 # send server the client name
                 msg_to_server = input(msg_from_server).encode(FORMAT)
                 client_socket.send(msg_to_server)
@@ -56,6 +56,13 @@ def client():
                 client_socket.send(msg_to_server.encode(FORMAT))
             
             if msg_to_server == '2':
+
+                # server asks client for the search word
+                msg_from_server = client_socket.recv(SIZE).decode(FORMAT)
+
+                # client sends the search word to the server
+                msg_to_server = input(msg_from_server)
+                client_socket.send(msg_to_server.encode(FORMAT))
 
                 # get server menu options again
                 msg_from_server = client_socket.recv(SIZE).decode(FORMAT)
