@@ -3,7 +3,6 @@
 
 # Using some code from assignment 1 to help create program for this lab 
 import socket
-import sys
 
 FORMAT = 'ascii'
 SIZE = 2048
